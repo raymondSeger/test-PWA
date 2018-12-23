@@ -80,6 +80,17 @@
                 }, function(){});
             }
         })
+
+        if (window.DeviceOrientationEvent) {
+            window.addEventListener('deviceorientation', function(event){
+                var absolute = event.absolute;
+                var alpha    = event.alpha;
+                var beta     = event.beta;
+                var gamma    = event.gamma;
+                console.log(absolute, alpha, beta, gamma);
+            }, false);
+       
+        }
         
     })(jQuery);
     </script>

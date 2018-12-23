@@ -21,6 +21,7 @@
     <button id="theButton">Add to Homepage</button>
     <button id="showNotificationPermission">Show Notification</button>
     <button id="showLocationPrompt">Give Location</button>
+    <button id="goFullscreen">Go Fullscreen</button>
 
     <img style="width: 100%;"
     srcset="https://assets.imgix.net/examples/bluehat.jpg?w=400 1x,
@@ -100,6 +101,23 @@
                 console.log(x, y, z);
             });
         }
+
+        $("#goFullscreen").click(function(){
+            (function toggleFullScreen() {
+                var doc = window.document;
+                var docEl = doc.documentElement;
+
+                var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+                var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+                if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+                    requestFullScreen.call(docEl);
+                }
+                else {
+                    cancelFullScreen.call(doc);
+                }
+            })();
+        })
         
     })(jQuery);
     </script>

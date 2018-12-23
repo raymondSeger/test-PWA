@@ -24,6 +24,10 @@
     <button id="goFullscreen">Go Fullscreen</button>
     <button id="getCameraVision">Camera Vision</button>
 
+    <input type="file" accept="image/*;capture=camera">
+    <input type="file" accept="video/*;capture=camcorder">
+    <input type="file" accept="audio/*;capture=microphone">
+
     <canvas id="theCanvas" style="width: 500px; height: 500px;"></canvas>
     <video src="" id="theVideo"></video>
 
@@ -143,7 +147,7 @@
         // access to camera as Video
         if(navigator.mediaDevices){
 
-            navigator.getUserMedia({video : true, audio: false}, function(stream){
+            navigator.mediaDevices.getUserMedia({video : true, audio: false}, function(stream){
             
                  // Create the canvas and get a context
                 var canvas = document.getElementById('theCanvas');
@@ -157,8 +161,20 @@
 
                 //save it for later
                 cameraStream = stream;
-
                 theVideo.play();
+
+                // microphone
+                var context     = new AudioContext();
+                var source      = context.createMediaStreamSource(stream);
+                var processor   = context.createScriptProcessor(1024, 1, 1);
+
+                source.connect(processor);
+                processor.connect(context.destination);
+
+                processor.onaudioprocess = function(e) {
+                    // Do something with the data, i.e Convert this to WAV
+                    console.log(e.inputBuffer);
+                };
 
             }, function(){
                 console.log('fail video');

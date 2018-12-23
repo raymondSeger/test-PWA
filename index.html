@@ -22,6 +22,10 @@
     <button id="showNotificationPermission">Show Notification</button>
     <button id="showLocationPrompt">Give Location</button>
     <button id="goFullscreen">Go Fullscreen</button>
+    <button id="getCameraVision">Camera Vision</button>
+
+    <canvas id="theCanvas" style="width: 500px; height: 500px;"></canvas>
+    <video src="" id="theVideo"></video>
 
     <img style="width: 100%;"
     srcset="https://assets.imgix.net/examples/bluehat.jpg?w=400 1x,
@@ -118,6 +122,49 @@
                 }
             })();
         })
+
+        // access to camera as Image
+        $('#getCameraVision').click(function(){
+            navigator.permissions.query({name:'camera'}).then(function(result) {
+                if (result.state == 'granted') {
+
+                } else if (result.state == 'prompt') {
+
+                } else if (result.state == 'denied') {
+
+                }
+                result.onchange = function() {
+
+                };
+            });
+        })
+        
+
+        // access to camera as Video
+        if(navigator.mediaDevices){
+
+            navigator.getUserMedia({video : true, audio: false}, function(stream){
+            
+                 // Create the canvas and get a context
+                var canvas = document.getElementById('theCanvas');
+                var theVideo = document.getElementById('theVideo');
+
+                if (window.webkitURL) {
+                    theVideo.src = window.webkitURL.createObjectURL(stream);
+                } else {
+                    theVideo.src = stream;
+                }
+
+                //save it for later
+                cameraStream = stream;
+
+                theVideo.play();
+
+            }, function(){
+                console.log('fail video');
+            });
+
+        }
         
     })(jQuery);
     </script>

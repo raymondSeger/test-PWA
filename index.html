@@ -20,6 +20,7 @@
 
     <button id="theButton">Add to Homepage</button>
     <button id="showNotificationPermission">Show Notification</button>
+    <button id="showLocationPrompt">Give Location</button>
 
     <img style="width: 100%;"
     srcset="https://assets.imgix.net/examples/bluehat.jpg?w=400 1x,
@@ -68,6 +69,16 @@
             Notification.requestPermission().then(function(permission) {
                 console.log(permission);
             });
+        })
+
+        $("#showLocationPrompt").click(function(){
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+                    console.log(latitude, longitude);
+                }, function(){});
+            }
         })
         
     })(jQuery);

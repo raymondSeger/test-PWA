@@ -1,8 +1,18 @@
-var cacheName = 'PWA-TEST';
-var filesToCache = [];
+var CACHE_NAME      = 'PWA-TEST';
+var filesToCache    = [
+  'http://localhost/test-pwa/test-PWA/app.css',
+  'http://localhost/test-pwa/test-PWA/app_data/apple.png'
+];
 
-self.addEventListener('install', function(e) {
+self.addEventListener('install', function(event) {
     console.log('[ServiceWorker] Install');
+    // Perform install steps
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then(function(cache) {
+            return cache.addAll(filesToCache);
+            })
+    );
 });
 
 self.addEventListener('activate', function(e) {

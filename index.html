@@ -19,6 +19,7 @@
     <p>Test it with Proxy Server + Android Devices: https://developers.google.com/web/tools/chrome-devtools/remote-debugging/local-server</p>
 
     <button id="theButton">Add to Homepage</button>
+    <button id="showNotificationPermission">Show Notification</button>
 
     <img style="width: 100%;"
     srcset="https://assets.imgix.net/examples/bluehat.jpg?w=400 1x,
@@ -62,6 +63,12 @@
                 deferredPrompt = null;
             });
         });
+
+        $('#showNotificationPermission').click(function(){
+            Notification.requestPermission().then(function(permission) {
+                console.log(permission);
+            });
+        })
         
     })(jQuery);
     </script>

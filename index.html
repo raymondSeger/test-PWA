@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="http://localhost/test-pwa/test-PWA/manifest.json">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>PWA</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -14,6 +15,8 @@
 <body>
 
     <h1>Hello World</h1>
+
+    <button id="theButton">Add to Homepage</button>
 
     <img style="width: 100%;"
     srcset="https://assets.imgix.net/examples/bluehat.jpg?w=400 1x,
@@ -29,11 +32,35 @@
             https://assets.imgix.net/examples/bluehat.jpg?w=400&dpr=3 1200w"
     src="https://assets.imgix.net/examples/bluehat.jpg?w=400" />
 
-    <br>
-
     <script>
     (function ($) {
 
+        var deferredPrompt;
+
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./raymond-sw.js').then(function() { console.log('Service Worker Registered'); });
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // Prevent Chrome 67 and earlier from automatically showing the prompt
+                e.preventDefault();
+                // Stash the event so it can be triggered later.
+                deferredPrompt = e;
+            });
+        }
+        
+        $('#theButton').click(function(){
+            $(this).hide();
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(choiceResult){
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('User accepted the A2HS prompt');
+                } else {
+                    console.log('User dismissed the A2HS prompt');
+                }
+                deferredPrompt = null;
+            });
+        });
+        
     })(jQuery);
     </script>
 </body>
